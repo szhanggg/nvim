@@ -112,10 +112,6 @@ fzf.setup({
 
 vim.pack.add{"https://github.com/NeogitOrg/neogit"}
 
-vim.pack.add{"https://github.com/nvim-lualine/lualine.nvim"}
-
-require("lualine").setup({})
-
 vim.pack.add({
     { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/ThePrimeagen/harpoon", version = "harpoon2" },
@@ -128,5 +124,3 @@ vim.pack.add({
         data = { after = "TSUpdate" },
     },
 })
-
-vim.pack.add{"https://github.com/vyfor/cord.nvim"}
