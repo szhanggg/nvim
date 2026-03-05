@@ -1,3 +1,5 @@
+vim.pack.add{"https://github.com/neovim/nvim-lspconfig"}
+
 vim.pack.add({
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
     { src = "https://github.com/stevearc/oil.nvim" },
