@@ -53,18 +53,10 @@ fzf.setup({
             ["ctrl-n"]  = actions.toggle_ignore,
             ["ctrl-h"]  = actions.toggle_hidden,
             ["enter"]   = actions.file_edit_or_qf,
-            ["default"] = function(selected, opts)
-                local entry = selected[1]
-                if entry:match("^oil%-ssh://") then
-                    require("oil").open(entry)
-                else
-                    fzf.actions.file_edit(selected, opts)
-                end
-            end,
         }
     },
     oldfiles = {
-        stat_file = false,
+        stat_file = true,
     }
 })
 
