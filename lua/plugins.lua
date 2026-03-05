@@ -76,3 +76,5 @@ vim.pack.add({
         data = { after = "TSUpdate" },
     },
 })
+
+vim.pack.add{"https://github.com/christoomey/vim-tmux-navigator"}
