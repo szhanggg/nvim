@@ -41,30 +41,39 @@ require('blink.cmp').setup({
 })
 
 vim.pack.add({
+    { src = "https://github.com/nvim-tree/nvim-web-devicons" },
     { src = "https://github.com/stevearc/oil.nvim" },
 })
 
-require("oil").setup({})
-
-vim.pack.add({
-    { src = "https://github.com/NMAC427/guess-indent.nvim" },
+require("oil").setup({
+    default_file_explorer = true,
+    columns = {
+        "icon",
+    },
+    delete_to_trash = true,
+    view_options = {
+        show_hidden = true,
+    },
 })
+
+vim.pack.add{"https://github.com/NMAC427/guess-indent.nvim"}
 
 require('guess-indent').setup({})
 
-vim.pack.add({
-    { src = "https://github.com/loctvl842/monokai-pro.nvim" },
+vim.pack.add{"https://github.com/rebelot/kanagawa.nvim"}
+
+require("kanagawa").setup({
+    transparent = true,
 })
 
-require("monokai-pro").setup()
-vim.cmd.colorscheme("monokai-pro")
+vim.cmd("colorscheme kanagawa-dragon")
 
-vim.pack.add({
-    { src = "https://github.com/ibhagwan/fzf-lua" },
-})
+vim.pack.add{"https://github.com/ibhagwan/fzf-lua"}
 
 local actions = require('fzf-lua.actions')
-require('fzf-lua').setup({
+local fzf = require("fzf-lua")
+
+fzf.setup({
     winopts = { backdrop = 85 },
     keymap = {
         builtin = {
@@ -82,14 +91,42 @@ require('fzf-lua').setup({
     },
     actions = {
         files = {
-            ["ctrl-q"] = actions.file_sel_to_qf,
-            ["ctrl-n"] = actions.toggle_ignore,
-            ["ctrl-h"] = actions.toggle_hidden,
-            ["enter"]  = actions.file_edit_or_qf,
+            ["ctrl-q"]  = actions.file_sel_to_qf,
+            ["ctrl-n"]  = actions.toggle_ignore,
+            ["ctrl-h"]  = actions.toggle_hidden,
+            ["enter"]   = actions.file_edit_or_qf,
+            ["default"] = function(selected, opts)
+                local entry = selected[1]
+                if entry:match("^oil%-ssh://") then
+                    require("oil").open(entry)
+                else
+                    fzf.actions.file_edit(selected, opts)
+                end
+            end,
         }
+    },
+    oldfiles = {
+        stat_file = false,
     }
 })
 
+vim.pack.add{"https://github.com/NeogitOrg/neogit"}
+
+vim.pack.add{"https://github.com/nvim-lualine/lualine.nvim"}
+
+require("lualine").setup({})
+
 vim.pack.add({
-    { src = "https://github.com/tpope/vim-fugitive" },
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
+    { src = "https://github.com/ThePrimeagen/harpoon", version = "harpoon2" },
 })
+
+vim.pack.add({
+    {
+        src = "https://github.com/nvim-treesitter/nvim-treesitter",
+        version = "main",
+        data = { after = "TSUpdate" },
+    },
+})
+
+vim.pack.add{"https://github.com/vyfor/cord.nvim"}

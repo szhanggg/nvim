@@ -1,5 +1,6 @@
+require("options")
 require("plugins")
 require("lsp")
-require("options")
 require("keymaps")
 require("diagnostics")
+require("autocommands")

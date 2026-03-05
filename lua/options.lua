@@ -114,6 +114,13 @@ vim.g.markdown_recommended_style = 0
 vim.filetype.add({
   extension = {
     env = "dotenv",
+    ex = "elixir",
+    exs = "elixir",
+    eex = "eelixir",
+    leex = "eelixir",
+    heex = "heex",
+    surface = "surface",
+    sface = "surface",
   },
   filename = {
     [".env"] = "dotenv",
@@ -124,4 +131,3 @@ vim.filetype.add({
     ["%.env%.[%w_.-]+"] = "dotenv",
   },
 })
-

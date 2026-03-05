@@ -15,6 +15,11 @@ map("n", "<S-Tab>", ":bprevious<CR>", { desc = "Previous buffer" })
 map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 
+map("n", "<leader>cd", '<cmd>lua vim.fn.chdir(vim.fn.expand("%:p:h"))<CR>')
+map("n", "<leader>bk", ":bd<CR>", opts)
+
+map("n", "<leader>.", ":Oil<CR>", opts)
+
 -- ═══════════════════════════════════════════════════════════
 -- WINDOW MANAGEMENT (splitting and navigation)
 -- ═══════════════════════════════════════════════════════════
@@ -45,6 +50,12 @@ map("v", ">", ">gv")
 map("v", "p", '"_dP', opts)
 
 -- ═══════════════════════════════════════════════════════════
+-- LSP
+-- ═══════════════════════════════════════════════════════════
+
+map("n", "<Leader>fo", ":lua vim.lsp.buf.format()<CR>", opts) -- Format the current buffer using LSP
+
+-- ═══════════════════════════════════════════════════════════
 -- DIAGNOSTICS
 -- ═══════════════════════════════════════════════════════════
 
@@ -55,7 +66,7 @@ local diagnostic_goto = function(next, severity)
   end
 end
 
-map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+map("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
 map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
 map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
@@ -64,16 +75,48 @@ map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
 map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
 -- ═══════════════════════════════════════════════════════════
+-- QUICKFIX LIST
+-- ═══════════════════════════════════════════════════════════
+
+map("n", "<leader>xq", function()
+  local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
+  if not success and err then
+    vim.notify(err, vim.log.levels.ERROR)
+  end
+end, { desc = "Quickfix List" })
+
+map("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
+map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
+
+-- ═══════════════════════════════════════════════════════════
 -- FZF
 -- ═══════════════════════════════════════════════════════════
 
+local fzf = require("fzf-lua")
+
 map("n", "<leader>ff", '<cmd>FzfLua files<CR>')
 map("n", "<leader>fg", '<cmd>FzfLua live_grep<CR>')
-
+map("n", "<leader>fr", '<cmd>FzfLua oldfiles<CR>')
+map("n", "<leader>fc", function()
+  fzf.files({
+    cwd = "~/Documents/cp/cp-library",
+    prompt = "CP Templates> ",
+  })
+end)
 
 -- ═══════════════════════════════════════════════════════════
 -- Git
 -- ═══════════════════════════════════════════════════════════
 
-map("n", "<leader>gs", '<cmd>Git<CR>', opts)
-map("n", "<leader>gp", '<cmd>Git push<CR>', opts)
+map("n", "<leader>gg", '<cmd>Neogit<CR>', opts)
+
+-- ═══════════════════════════════════════════════════════════
+-- Harpoon
+-- ═══════════════════════════════════════════════════════════
+
+local harpoon = require("harpoon")
+
+harpoon:setup()
+
+vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
