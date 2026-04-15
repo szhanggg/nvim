@@ -78,3 +78,7 @@ vim.pack.add({
 })
 
 vim.pack.add{"https://github.com/christoomey/vim-tmux-navigator"}
+vim.pack.add{"https://github.com/folke/todo-comments.nvim"}
+require("todo-comments").setup({})
+vim.pack.add{"https://github.com/uhs-robert/sshfs.nvim"}
+require("sshfs").setup({})

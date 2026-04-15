@@ -120,3 +120,42 @@ harpoon:setup()
 
 vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
 vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+-- ═══════════════════════════════════════════════════════════
+-- Compilation
+-- ═══════════════════════════════════════════════════════════
+
+local run_group = vim.api.nvim_create_augroup("CppRunConfig", { clear = true })
+
+-- C++ Mappings
+vim.api.nvim_create_autocmd("FileType", {
+  group = run_group,
+  pattern = "cpp",
+  callback = function()
+    local opts = { buffer = true, noremap = true }
+    vim.keymap.set("n", "<F8>",  "<cmd>w | !g++ -std=c++23 -DLOCAL %<CR>", opts)
+    vim.keymap.set("n", "<F9>",  "<cmd>w | !g++ -std=c++23 -DLOCAL %<CR><cmd>vnew | te ./a.out<CR>", opts)
+    vim.keymap.set("n", "<F10>", "<cmd>vnew | te ./a.out<CR>", opts)
+  end,
+})
+
+-- C Mappings
+vim.api.nvim_create_autocmd("FileType", {
+  group = run_group,
+  pattern = "c",
+  callback = function()
+    local opts = { buffer = true, noremap = true }
+    vim.keymap.set("n", "<F8>", "<cmd>w | !gcc -Wall -Wextra -Wshadow -Werror -std=c99 -pedantic -g -DDEBUG %<CR>", opts)
+    vim.keymap.set("n", "<F9>", "<cmd>w | !gcc -Wall -Wextra -Wshadow -Werror -std=c99 -pedantic -g %<CR><cmd>vnew | te ./a.out<CR>", opts)
+  end,
+})
+
+-- Python Mappings
+vim.api.nvim_create_autocmd("FileType", {
+  group = run_group,
+  pattern = "python",
+  callback = function()
+    local opts = { buffer = true, noremap = true }
+    vim.keymap.set("n", "<F9>", "<cmd>w | vsplit | term python3 %<CR>", opts)
+  end,
+})
